@@ -1,0 +1,19 @@
+.Card {
+  height: fit-content;
+  border-radius: 12px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+  margin: auto;
+  margin-bottom: 10px;
+  padding: 10px;
+  padding-left: 50px;
+  padding-right: 50px;
+  background-color: white;
+  text-align: left;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  color: black;
+}
+.Card p {
+  margin: 5px;
+}
