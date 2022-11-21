@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import fetchHotelRooms from "./fetchHotelRooms";
 
 import fetchHotels from "./fetchHotels";
+import HotelFilterMenu from "./HotelFilterMenu/HotelFilterMenu";
 import HotelItem from "./HotelItem";
 import classes from "./HotelsPage.module.css";
 
@@ -29,15 +31,17 @@ const HotelsPage = () => {
   // @TODO: create room list, probably using queries using hotelID, handle empty array scenario
   // perhaps create a model when u click on each room with more info, check how I select current vehicle in my API-app to select & view without sending a request
   // https://obmng.dbm.guestline.net/api/roomRates/OBMNG/OBMNG1
-
-  const hotelsList = hotels.map((hotelData) => (
-    <HotelItem {...hotelData} key={hotelData.id} />
-    // {/* Room data has to go here, or within Hotel component and then we have to elevate the room capacity/s up to here so we can filter properly */}
-  ));
+  const hotelsList = hotels.map((hotelData) => {
+    return (
+      <HotelItem {...hotelData} key={hotelData.id} />
+      // {/* Room data has to go here, or within Hotel component and then we have to elevate the room capacity/s up to here so we can filter properly */}
+    );
+  });
 
   return (
     <main className={classes.main}>
       <h2>Hotel Page</h2>
+      <HotelFilterMenu />
 
       <div className={classes.hotelsList}>{hotelsList}</div>
     </main>

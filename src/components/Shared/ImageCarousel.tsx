@@ -8,14 +8,13 @@ import classes from "./ImageCarousel.module.css";
 const ImageCarousel: React.FC<{
   images: { url: string; alt?: string }[];
 }> = (props) => {
-  const imageGallery = props.images.map((image) => (
-    <div>
-      <ImageCarouselItem
-        url={image.url}
-        alt={image.alt}
-        className={classes.hotelImage}
-      />
-    </div>
+  const imageGallery = props.images.map((image, index) => (
+    <ImageCarouselItem
+      url={image.url}
+      alt={image.alt}
+      className={classes.hotelImage}
+      key={index}
+    />
   ));
   return (
     <Carousel

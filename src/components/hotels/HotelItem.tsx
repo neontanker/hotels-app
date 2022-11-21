@@ -1,34 +1,42 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import fetchHotelRooms from "./fetchHotelRooms";
 import ImageGalleryList from "../Shared/ImageCarousel";
 import Card from "../UI/Card";
 import classes from "./HotelItem.module.css";
+import RoomItem from "./RoomItem";
+import StarRating from "./HotelFilterMenu/StarRating";
+
+type RoomsData = {
+  rooms: Room[];
+  ratePlans: RatePlan[];
+};
 const HotelItem: React.FC<Hotel> = (props) => {
-  const [roomsData, setRoomsData] = useState<{
-    rooms: Room[];
-    ratePlans: RatePlan[];
-  } | null>(null);
+  const [roomsData, setRoomsData] = useState<RoomsData | null>(null);
+
   const [error, setError] = useState<string | null>(null);
   //@todo: setup hotel details
   useEffect(() => {
     (async function getHotelRooms() {
       try {
-        const rooms = await fetchHotelRooms(props.id);
-        setRoomsData(rooms);
-        setError(null);
+        const data = await fetchHotelRooms(props.id);
+        setRoomsData(data);
       } catch (error) {
         setError(String(error));
       }
-
       // setSelectedHotel(data[0]);
     })();
   }, [props.id]);
+
   if (error) return <p>{error}</p>;
   if (!roomsData) return <div className={classes.main}>Loading...</div>;
 
   const roomsList = roomsData.rooms.map((room) => {
-    return <div className={classes.container}>{room.name}</div>;
+    return (
+      <div className={classes.container} key={room.id}>
+        <RoomItem {...room} />
+      </div>
+    );
   });
 
   return (
@@ -45,7 +53,9 @@ const HotelItem: React.FC<Hotel> = (props) => {
           <p>{props.email}</p>
           <p>{props.telephone}</p>
         </div>
-        <div>star rating</div>
+        <div>
+          <StarRating disabled={true} starRating={Number(props.starRating)} />
+        </div>
       </div>
       {/* create a div container to contain all the rooms with a "show more" */}
       {/* <div className={classes.container}>{props.description}</div> */}
