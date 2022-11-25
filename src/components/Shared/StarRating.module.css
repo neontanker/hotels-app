@@ -1,8 +1,11 @@
+.starRating {
+  display: flex;
+  margin: 5px;
+}
 .button {
   background-color: transparent;
   border: none;
   outline: none;
-  cursor: pointer;
   font-size: 25px;
 }
 .on {
@@ -10,7 +13,4 @@
 }
 .off {
   color: #ccc;
-}
-.disabled {
-  cursor: default;
 }

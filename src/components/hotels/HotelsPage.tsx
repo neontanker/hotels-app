@@ -1,47 +1,70 @@
 import { useEffect, useState } from "react";
-import fetchHotelRooms from "./fetchHotelRooms";
 
-import fetchHotels from "./fetchHotels";
 import HotelFilterMenu from "./HotelFilterMenu/HotelFilterMenu";
 import HotelItem from "./HotelItem";
 import classes from "./HotelsPage.module.css";
+import getMergedHotels from "./getMergedHotels/getMergedHotels";
 
-//@TODO: Create a filtering system with star rating etc..
 const HotelsPage = () => {
   const [hotels, setHotels] = useState<Hotel[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [selectedStarRating, setSelectedStarRating] = useState<number>(0);
+  const [selectedAdultCapacity, setSelectedAdultCapacity] = useState<number>(0);
+  const [selectedChildrenCapacity, setselectedChildrenCapacity] =
+    useState<number>(0);
+
+  const changeStarRating = (starRating: number) => {
+    setSelectedStarRating(starRating);
+  };
+  const changeAdultCapacity = (count: number) => {
+    setSelectedAdultCapacity(count);
+  };
+  const changeChildrenCapacity = (count: number) => {
+    setselectedChildrenCapacity(count);
+  };
 
   useEffect(() => {
     (async function getHotels() {
-      //@TODO: Copy to HotelItem & fetchHotels to fetchHotelRooms
       try {
-        const data = await fetchHotels();
+        const data = await getMergedHotels();
         setHotels(data);
         setError(null);
       } catch (error) {
         setError(String(error));
       }
-
-      // setSelectedHotel(data[0]);
     })();
   }, []);
-  if (error) return <p>{error}</p>;
+  if (error) return <p className={classes.error}>{error}</p>;
   if (!hotels) return <div className={classes.main}>Loading...</div>;
 
-  // @TODO: create room list, probably using queries using hotelID, handle empty array scenario
-  // perhaps create a model when u click on each room with more info, check how I select current vehicle in my API-app to select & view without sending a request
-  // https://obmng.dbm.guestline.net/api/roomRates/OBMNG/OBMNG1
-  const hotelsList = hotels.map((hotelData) => {
+  // @TODO: perhaps create a model when u click on each room with more info, check how I select current vehicle in my API-app to select & view without sending a request
+
+  const filteredHotels = hotels.filter(
+    (hotel) => Number(hotel.starRating) >= selectedStarRating
+  );
+
+  const hotelsList = filteredHotels.map((hotelData) => {
     return (
-      <HotelItem {...hotelData} key={hotelData.id} />
-      // {/* Room data has to go here, or within Hotel component and then we have to elevate the room capacity/s up to here so we can filter properly */}
+      <HotelItem
+        {...hotelData}
+        selectedAdultCapacity={selectedAdultCapacity}
+        selectedChildrenCapacity={selectedChildrenCapacity}
+        key={hotelData.id}
+      />
     );
   });
 
   return (
     <main className={classes.main}>
       <h2>Hotel Page</h2>
-      <HotelFilterMenu />
+      <HotelFilterMenu
+        changeStarRating={changeStarRating}
+        starRating={selectedStarRating}
+        changeAdultCapacity={changeAdultCapacity}
+        adultCapacity={selectedAdultCapacity}
+        changeChildrenCapacity={changeChildrenCapacity}
+        childrenCapacity={selectedChildrenCapacity}
+      />
 
       <div className={classes.hotelsList}>{hotelsList}</div>
     </main>

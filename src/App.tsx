@@ -5,7 +5,7 @@ import HotelsPage from "./components/hotels/HotelsPage";
 
 // https://create-react-app.dev/docs/adding-typescript/
 
-function App() {
+const App = () => {
   //
   return (
     <>
@@ -13,6 +13,6 @@ function App() {
       <HotelsPage />
     </>
   );
-}
+};
 
 export default App;

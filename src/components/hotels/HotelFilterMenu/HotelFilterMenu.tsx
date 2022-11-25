@@ -1,17 +1,45 @@
-import { useState } from "react";
 import classes from "./HotelFilterMenu.module.css";
-import StarRating from "./StarRating";
+import CapacityControls from "./CapacityControls";
+import StarRatingControls from "./StarRatingControls";
 
-const HotelFilterMenu: React.FC = () => {
-  //@TODO: create a filtering menu of star rating & room capacity (amount of children, adults)
-  // might help: https://dev.to/michaelburrows/create-a-custom-react-star-rating-component-5o6
-  const onStarClickHandler = (starRating: number) => {
-    // setStarRating on parent
+const HotelFilterMenu: React.FC<{
+  changeStarRating: (starRating: number) => void;
+  starRating: number;
+  changeAdultCapacity: (count: number) => void;
+  adultCapacity: number;
+  changeChildrenCapacity: (count: number) => void;
+  childrenCapacity: number;
+}> = (props) => {
+  const changeStarRating = (starRating: number) => {
+    props.changeStarRating(starRating);
+  };
+  const changeAdultCapacity = (count: number) => {
+    props.changeAdultCapacity(count);
+  };
+  const changeChildrenCapacity = (count: number) => {
+    props.changeChildrenCapacity(count);
   };
   return (
     <div className={classes.container}>
       <div>
-        <StarRating />
+        <StarRatingControls
+          changeStarRating={changeStarRating}
+          rating={props.starRating}
+        />
+      </div>
+      <div>
+        <CapacityControls
+          text={"Adults"}
+          changeCapacity={changeAdultCapacity}
+          value={props.adultCapacity}
+        />
+      </div>
+      <div>
+        <CapacityControls
+          text={"Children"}
+          changeCapacity={changeChildrenCapacity}
+          value={props.childrenCapacity}
+        />
       </div>
     </div>
   );

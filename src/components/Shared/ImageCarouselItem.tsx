@@ -1,5 +1,3 @@
-import classes from "./ImageCarouselItem.module.css";
-
 const ImageCarouselItem: React.FC<{
   url: string;
   alt?: string;

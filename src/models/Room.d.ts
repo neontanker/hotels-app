@@ -3,7 +3,7 @@ type Room = {
   name: string;
   shortDescription: string;
   longDescription: string;
-  occupancy: { maxAdults: number; maxChildren: number; maxOverall: number };
+  occupancy: { maxAdults: number; maxChildren: number; maxOverall?: number };
   disabledAccess: boolean;
   bedConfiguration: string;
   images: { url: string; alt?: string }[];

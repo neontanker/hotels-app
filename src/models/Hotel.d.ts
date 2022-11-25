@@ -26,4 +26,8 @@ type Hotel = {
     longitude: number;
     timezone: string;
   };
+  roomRates: {
+    rooms: Room[];
+    ratePlans: RatePlan[];
+  };
 };

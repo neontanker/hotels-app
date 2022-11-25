@@ -4,7 +4,6 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import ImageCarouselItem from "./ImageCarouselItem";
 import classes from "./ImageCarousel.module.css";
 
-// @TODO: get the image gallery to be contained within each hotel item nicely
 const ImageCarousel: React.FC<{
   images: { url: string; alt?: string }[];
 }> = (props) => {
@@ -17,12 +16,7 @@ const ImageCarousel: React.FC<{
     />
   ));
   return (
-    <Carousel
-      width="300px"
-      dynamicHeight={true}
-      showArrows={true}
-      showThumbs={false}
-    >
+    <Carousel showArrows={true} showThumbs={false}>
       {imageGallery}
     </Carousel>
   );

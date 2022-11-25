@@ -1,66 +1,89 @@
-import React, { useEffect, useState } from "react";
-
-import fetchHotelRooms from "./fetchHotelRooms";
-import ImageGalleryList from "../Shared/ImageCarousel";
+import ImageCarousel from "../Shared/ImageCarousel";
 import Card from "../UI/Card";
 import classes from "./HotelItem.module.css";
 import RoomItem from "./RoomItem";
-import StarRating from "./HotelFilterMenu/StarRating";
+import StarRating from "../Shared/StarRating";
+import { useState } from "react";
 
-type RoomsData = {
-  rooms: Room[];
-  ratePlans: RatePlan[];
-};
-const HotelItem: React.FC<Hotel> = (props) => {
-  const [roomsData, setRoomsData] = useState<RoomsData | null>(null);
+const defaultRoomsToShow = 3;
+const HotelItem: React.FC<
+  Hotel & { selectedAdultCapacity: number; selectedChildrenCapacity: number }
+> = (props) => {
+  const [roomsToShow, setRoomsToShow] = useState<number>(defaultRoomsToShow);
+  const [expanded, setExpanded] = useState<boolean>(false);
 
-  const [error, setError] = useState<string | null>(null);
-  //@todo: setup hotel details
-  useEffect(() => {
-    (async function getHotelRooms() {
-      try {
-        const data = await fetchHotelRooms(props.id);
-        setRoomsData(data);
-      } catch (error) {
-        setError(String(error));
-      }
-      // setSelectedHotel(data[0]);
-    })();
-  }, [props.id]);
+  const onShowMoreHandler = (filteredRoomsLength: number) => {
+    if (roomsToShow === defaultRoomsToShow) {
+      setRoomsToShow(filteredRoomsLength);
+      setExpanded(true);
+    } else {
+      setRoomsToShow(defaultRoomsToShow);
+      setExpanded(false);
+    }
+  };
 
-  if (error) return <p>{error}</p>;
-  if (!roomsData) return <div className={classes.main}>Loading...</div>;
+  const selectedOverallCapacity =
+    props.selectedAdultCapacity + props.selectedChildrenCapacity;
+  const filteredRooms = props.roomRates.rooms.filter((room) => {
+    const maxOverall: number =
+      typeof room.occupancy.maxOverall === "number"
+        ? room.occupancy.maxOverall
+        : room.occupancy.maxAdults + room.occupancy.maxChildren;
 
-  const roomsList = roomsData.rooms.map((room) => {
     return (
-      <div className={classes.container} key={room.id}>
-        <RoomItem {...room} />
-      </div>
+      room.occupancy.maxAdults >= props.selectedAdultCapacity &&
+      room.occupancy.maxChildren >= props.selectedChildrenCapacity &&
+      maxOverall >= selectedOverallCapacity
     );
+  });
+  // @TODO: Model for more info about each room, onClick of lefthand Div?
+  const roomsList = filteredRooms.slice(0, roomsToShow).map((room) => {
+    return <RoomItem {...room} key={room.id} />;
   });
 
   return (
-    <Card className={classes.hotelCard}>
-      <div className={classes.container}>
-        <ImageGalleryList images={props.images} />
-        <div>
-          <p className={classes.hotelName}>{props.name}</p>
-          <p>{props.address1}</p>
-          <p>{props.address2}</p>
-          <p>{props.town}</p>
-          <p>{props.postcode}</p>
-          <p>{props.country}</p>
-          <p>{props.email}</p>
-          <p>{props.telephone}</p>
+    <>
+      <Card className={classes.hotelCard}>
+        <div className={classes.container}>
+          <div className={classes.carousel}>
+            <ImageCarousel images={props.images} />
+          </div>
+          <div className={classes.hotelDetails}>
+            <div>
+              <p className={classes.hotelName}>{props.name}</p>
+              <p>{props.address1}</p>
+              <p>{props.address2}</p>
+              <p>{props.town}</p>
+              <p>{props.postcode}</p>
+              <p>{props.country}</p>
+              <p>{props.email}</p>
+              <p>{props.telephone}</p>
+              {/* @ASK (Description not needed) add description while keeping star position at top right? */}
+              {/* <div className={classes.container}>{props.description}</div> */}
+            </div>
+            <div className={classes.starRating}>
+              <StarRating rating={Number(props.starRating)} />
+            </div>
+          </div>
         </div>
-        <div>
-          <StarRating disabled={true} starRating={Number(props.starRating)} />
-        </div>
-      </div>
-      {/* create a div container to contain all the rooms with a "show more" */}
-      {/* <div className={classes.container}>{props.description}</div> */}
-      {roomsList}
-    </Card>
+        {roomsList.length > 0 ? (
+          roomsList
+        ) : (
+          <p className={classes.message}>
+            No rooms found with selected filter.
+          </p>
+        )}
+      </Card>
+      {/* @TODO: Show more animations w/ React-Transition-Group third party package? */}
+      {filteredRooms.length > defaultRoomsToShow && (
+        <button
+          className={classes.showMoreButton}
+          onClick={() => onShowMoreHandler(filteredRooms.length)}
+        >
+          {expanded ? "Show less" : "Show more"}
+        </button>
+      )}
+    </>
   );
 };
 

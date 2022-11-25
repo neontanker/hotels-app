@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-color: rgb(241, 243, 247);
+  border-top: solid 1px rgba(0, 0, 0, 0.25);
+  height: max-content;
+}
+/* @TODO: fix border */
+.roomDetails {
+  display: inline-block;
+  width: 20%;
+  align-self: stretch;
+  border-right: solid 1px rgba(0, 0, 0, 0.25);
+}
+.roomDescription {
+  width: 80%;
+}
+@media screen and (max-width: 1024px) {
+  .roomDetails {
+    width: 100%;
+    border-right: none;
+  }
+  .roomDescription {
+    width: 100%;
+  }
+}
