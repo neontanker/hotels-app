@@ -2,6 +2,7 @@ import classes from "./HotelFilterMenu.module.css";
 import CapacityControls from "./CapacityControls";
 import StarRatingControls from "./StarRatingControls";
 
+//@TODO: Create a "clear filters" button
 const HotelFilterMenu: React.FC<{
   changeStarRating: (starRating: number) => void;
   starRating: number;
@@ -27,19 +28,21 @@ const HotelFilterMenu: React.FC<{
           rating={props.starRating}
         />
       </div>
-      <div>
-        <CapacityControls
-          text={"Adults"}
-          changeCapacity={changeAdultCapacity}
-          value={props.adultCapacity}
-        />
-      </div>
-      <div>
-        <CapacityControls
-          text={"Children"}
-          changeCapacity={changeChildrenCapacity}
-          value={props.childrenCapacity}
-        />
+      <div className={classes.capacityControlsContainer}>
+        <div>
+          <CapacityControls
+            text={"Adults"}
+            changeCapacity={changeAdultCapacity}
+            value={props.adultCapacity}
+          />
+        </div>
+        <div>
+          <CapacityControls
+            text={"Children"}
+            changeCapacity={changeChildrenCapacity}
+            value={props.childrenCapacity}
+          />
+        </div>
       </div>
     </div>
   );

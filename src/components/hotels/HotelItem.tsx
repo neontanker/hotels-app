@@ -36,7 +36,7 @@ const HotelItem: React.FC<
       maxOverall >= selectedOverallCapacity
     );
   });
-  // @TODO: Model for more info about each room, onClick of lefthand Div?
+  // @TODO: Model for more info about each room, onClick of RoomDetails?
   const roomsList = filteredRooms.slice(0, roomsToShow).map((room) => {
     return <RoomItem {...room} key={room.id} />;
   });
@@ -50,7 +50,7 @@ const HotelItem: React.FC<
           </div>
           <div className={classes.hotelDetails}>
             <div>
-              <p className={classes.hotelName}>{props.name}</p>
+              <h2 className={classes.hotelName}>{props.name}</h2>
               <p>{props.address1}</p>
               <p>{props.address2}</p>
               <p>{props.town}</p>
@@ -58,8 +58,6 @@ const HotelItem: React.FC<
               <p>{props.country}</p>
               <p>{props.email}</p>
               <p>{props.telephone}</p>
-              {/* @ASK (Description not needed) add description while keeping star position at top right? */}
-              {/* <div className={classes.container}>{props.description}</div> */}
             </div>
             <div className={classes.starRating}>
               <StarRating rating={Number(props.starRating)} />

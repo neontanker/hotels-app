@@ -10,13 +10,17 @@ const CapacityControls: React.FC<{
   };
   // @TODO: Disable + button if there are no rooms with selectedCapacity + 1
   return (
-    <div className={classes.capacityControls}>
+    <div className={classes.controlsContainer}>
       {props.text}:{" "}
-      <button onClick={() => props.value !== 0 && changeCount(props.value - 1)}>
-        -
-      </button>
-      <button>{props.value}</button>
-      <button onClick={() => changeCount(props.value + 1)}>+</button>
+      <div className={classes.controls}>
+        <button
+          onClick={() => props.value !== 0 && changeCount(props.value - 1)}
+        >
+          &minus;
+        </button>
+        <span>{props.value}</span>
+        <button onClick={() => changeCount(props.value + 1)}>+</button>
+      </div>
     </div>
   );
 };

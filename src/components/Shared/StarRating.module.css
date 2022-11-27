@@ -1,6 +1,7 @@
 .starRating {
   display: flex;
   margin: 5px;
+  justify-content: center;
 }
 .button {
   background-color: transparent;
