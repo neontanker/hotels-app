@@ -1,7 +1,6 @@
 import classes from "./RoomItem.module.css";
 
 const RoomItem: React.FC<Room> = (props) => {
-  // inline block?, dynamic size by largest, spread evenly vertically
   return (
     <div className={classes.container}>
       <div className={classes.roomDetails}>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import StarRating from "../../Shared/StarRating";
+import StarRating from "../../shared/StarRating/StarRating";
 
 import classes from "./StarRatingControls.module.css";
 const StarRatingControls: React.FC<{

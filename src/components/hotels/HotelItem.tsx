@@ -1,8 +1,8 @@
-import ImageCarousel from "../Shared/ImageCarousel";
-import Card from "../UI/Card";
+import ImageCarousel from "../shared/ImageCarousel/ImageCarousel";
+import Card from "../shared/Card/Card";
 import classes from "./HotelItem.module.css";
 import RoomItem from "./RoomItem";
-import StarRating from "../Shared/StarRating";
+import StarRating from "../shared/StarRating/StarRating";
 import { useState } from "react";
 
 const defaultRoomsToShow = 3;
@@ -29,14 +29,13 @@ const HotelItem: React.FC<
       typeof room.occupancy.maxOverall === "number"
         ? room.occupancy.maxOverall
         : room.occupancy.maxAdults + room.occupancy.maxChildren;
-
     return (
       room.occupancy.maxAdults >= props.selectedAdultCapacity &&
       room.occupancy.maxChildren >= props.selectedChildrenCapacity &&
       maxOverall >= selectedOverallCapacity
     );
   });
-  // @TODO: Model for more info about each room, onClick of RoomDetails?
+  // @TODO: Model for more info about each room e.g facilities and images, onClick of roomDetails?
   const roomsList = filteredRooms.slice(0, roomsToShow).map((room) => {
     return <RoomItem {...room} key={room.id} />;
   });
@@ -59,7 +58,7 @@ const HotelItem: React.FC<
               <p>{props.email}</p>
               <p>{props.telephone}</p>
             </div>
-            <div className={classes.starRating}>
+            <div>
               <StarRating rating={Number(props.starRating)} />
             </div>
           </div>

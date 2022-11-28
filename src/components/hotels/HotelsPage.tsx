@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import HotelFilterMenu from "./HotelFilterMenu/HotelFilterMenu";
 import HotelItem from "./HotelItem";
 import classes from "./HotelsPage.module.css";
-import getMergedHotels from "./getMergedHotels/getMergedHotels";
+import getMergedHotels from "./api/getMergedHotels";
 
 const HotelsPage = () => {
   const [hotels, setHotels] = useState<Hotel[] | null>(null);
@@ -37,8 +37,6 @@ const HotelsPage = () => {
   if (error) return <p className={classes.error}>{error}</p>;
   if (!hotels) return <div className={classes.main}>Loading...</div>;
 
-  // @TODO: perhaps create a model when u click on each room with more info, check how I select current vehicle in my API-app to select & view without sending a request
-
   const filteredHotels = hotels.filter(
     (hotel) => Number(hotel.starRating) >= selectedStarRating
   );
@@ -56,7 +54,7 @@ const HotelsPage = () => {
 
   return (
     <main className={classes.main}>
-      <h2>Hotel Page</h2>
+      <h2>Hotels</h2>
       <HotelFilterMenu
         changeStarRating={changeStarRating}
         starRating={selectedStarRating}
